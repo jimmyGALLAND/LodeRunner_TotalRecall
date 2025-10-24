@@ -21,59 +21,6 @@ var MIN_SCALE = 0.5,
 var MENU_ICON_X = 40, MENU_ICON_Y = 36, ICON_BORDER = 4;
 var BASE_ICON_X = (MENU_ICON_X + ICON_BORDER * 2);
 
-var KEYCODE_BKSPACE = 8, //backspace
-	KEYCODE_ENTER = 13,
-	KEYCODE_SPACE = 32,
-	KEYCODE_ESC = 27, //escape
-	
-	KEYCODE_X = 88,  //dig right
-	KEYCODE_Y = 89,  //dig left (Y key to dig left, for German keyboards)
-	KEYCODE_Z = 90,  //dig left
-
-	KEYCODE_LEFT  = 37, //move left
-	KEYCODE_RIGHT = 39, //move right
-	KEYCODE_UP    = 38, //move up
-	KEYCODE_DOWN  = 40, //move down
-
-	KEYCODE_SUBTRACT = 109,  //Add KEYCODE_SUBTRACT & KEYCODE_HYPHEN for support fireFox 'dash' keycode
-	KEYCODE_HYPHEN   = 173,  //
-	KEYCODE_DASH = 189, //'-'
-	KEYCODE_DOT  = 190, //'.'
-
-	KEYCODE_U = 85,  //dig left
-	KEYCODE_O = 79,  //dig right
-
-	KEYCODE_J = 74,  //move left
-	KEYCODE_L = 76,  //move right
-	KEYCODE_I = 73,  //move up
-	KEYCODE_K = 75,  //move down
-	
-	KEYCODE_PERIOD = 190, //'.'
-	KEYCODE_COMMA  = 188, //',' 
-	
-	KEYCODE_A = 65, //'A'
-	KEYCODE_C = 67, //'C'
-	KEYCODE_D = 68, //'D'
-	KEYCODE_E = 69, //'E'
-	KEYCODE_G = 71, //'G'	
-	KEYCODE_H = 72, //'H'
-	KEYCODE_Q = 81, //'Q'
-	KEYCODE_R = 82, //'R'
-	KEYCODE_S = 83, //'S'
-	KEYCODE_T = 84, //'T'
-	KEYCODE_V = 86, //'V'
-	KEYCODE_W = 87; //'W'
-
-var	KEYCODE_0 = 48,
-	KEYCODE_1 = 49,
-	KEYCODE_2 = 50,
-	KEYCODE_3 = 51,
-	KEYCODE_4 = 52,
-	KEYCODE_5 = 53,
-	KEYCODE_6 = 54,
-	KEYCODE_7 = 55,
-	KEYCODE_8 = 56,
-	KEYCODE_9 = 57;
 	
 var SCORE_COMPLETE_LEVEL = 1500, SCORE_COUNTER = 15,
 	SCORE_GET_GOLD = 250,
@@ -198,3 +145,117 @@ var STORAGE_GAMEPAD_MODE = "loderunner_gamepadMode";
 // backup & restore file header
 //================================
 var LRWG_FILE_START_INFO = "LODE RUNNER WEB GAME.";
+
+//================================
+// keyCode and code relations
+//================================
+
+var actionKeyMapping = [
+	[ "KeyA", "ArrowLeft"],  //move left
+	[ "KeyD", "ArrowRight"], //move right
+	[ "KeyW", "ArrowUp"],    //move up
+	[ "KeyS", "ArrowDown"],  //move down
+	[ "KeyQ", "KeyZ"],     //dig left
+	[ "KeyE", "KeyX"],     //dig right
+	[ "Comma", "KeyZ"], //dig left
+	[ "Period", "KeyX"] //dig right
+	];
+
+var MAPKEYCODE = {
+	8: "Backspace",
+	9: "Tab",
+	13: "Enter",
+	16: "ShiftLeft",
+	17: "ControlLeft",
+	18: "AltLeft",
+	19: "Pause",
+	20: "CapsLock",
+	27: "Escape",
+	32: "Space",
+	33: "PageUp",
+	34: "PageDown",
+	35: "End",
+	36: "Home",
+	37: "ArrowLeft",
+	38: "ArrowUp",
+	39: "ArrowRight",
+	40: "ArrowDown",
+	45: "Insert",
+	46: "Delete",
+	48: "Digit0",
+	49: "Digit1",
+	50: "Digit2",
+	51: "Digit3",
+	52: "Digit4",
+	53: "Digit5",
+	54: "Digit6",
+	55: "Digit7",
+	56: "Digit8",
+	57: "Digit9",
+	65: "KeyA",
+	66: "KeyB",
+	67: "KeyC",
+	68: "KeyD",
+	69: "KeyE",
+	70: "KeyF",
+	71: "KeyG",
+	72: "KeyH",
+	73: "KeyI",
+	74: "KeyJ",
+	75: "KeyK",
+	76: "KeyL",
+	77: "KeyM",
+	78: "KeyN",
+	79: "KeyO",
+	80: "KeyP",
+	81: "KeyQ",
+	82: "KeyR",
+	83: "KeyS",
+	84: "KeyT",
+	85: "KeyU",
+	86: "KeyV",
+	87: "KeyW",
+	88: "KeyX",
+	89: "KeyY",
+	90: "KeyZ",
+	91: "MetaLeft",
+	93: "ContextMenu",
+	96: "Numpad0",
+	97: "Numpad1",
+	98: "Numpad2",
+	99: "Numpad3",
+	100: "Numpad4",
+	101: "Numpad5",
+	102: "Numpad6",
+	103: "Numpad7",
+	104: "Numpad8",
+	105: "Numpad9",
+	106: "NumpadMultiply",
+	107: "NumpadAdd",
+	109: "NumpadSubtract",
+	110: "NumpadDecimal",
+	111: "NumpadDivide",
+	112: "F1",
+	113: "F2",
+	114: "F3",
+	115: "F4",
+	116: "F5",
+	117: "F6",
+	118: "F7",
+	119: "F8",
+	120: "F9",
+	121: "F10",
+	122: "F11",
+	123: "F12",
+	186: "Semicolon",
+	187: "Equal",
+	188: "Comma",
+	189: "Minus",
+	190: "Period",
+	191: "Slash",
+	192: "Backquote",
+	219: "BracketLeft",
+	220: "Backslash",
+	221: "BracketRight",
+	222: "Quote"
+  };

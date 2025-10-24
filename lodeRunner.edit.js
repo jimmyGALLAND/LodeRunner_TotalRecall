@@ -1032,15 +1032,15 @@ function editHandleKeyDown(event)
 	if(!event){ event = window.event; } //cross browser issues exist
 	
 	if (event.ctrlKey) {
-		switch(event.keyCode) {
-		case KEYCODE_C: //CTRL-C : copy current level
+		switch(event.code) {
+		case "KeyC": //CTRL-C : copy current level
 			if (!editMapIsEmpty) {	
 				copyLevelMap = copyEditingMap();
 				copyLevelPassed = (!testLevelInfo.modified && lastRunner) || testLevelInfo.pass;
 				setTimeout(function() { showTipsText("COPY MAP", 1500);}, 50);
 			}
 			break;	
-		case KEYCODE_V: //CTRL-V : paste copy map
+		case "KeyV": //CTRL-V : paste copy map
 			if(copyLevelMap != null && editMapIsEmpty && testLevelInfo.level <= MAX_EDIT_LEVEL) {
 				editPasteMap();
 			}

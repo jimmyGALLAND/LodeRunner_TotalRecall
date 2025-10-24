@@ -406,7 +406,7 @@ function infoMenuClass(_stage, _scale)
 	function InfoKeyDown(event)
 	{
 		if(!event){ event = window.event; } //cross browser issues exist
-		if(event.keyCode == KEYCODE_ESC) {
+		if(event.code == "Escape") {
 			closeInfoMenu();
 		}
 		return false;
