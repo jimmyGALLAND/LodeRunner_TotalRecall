@@ -214,7 +214,7 @@ function getNextDemoLevel()
 	initDemoInfo();
 }
 
-function curDemoLevelIsVaild()
+function curDemoLevelIsValid()
 {
 	if(playData == PLAY_DATA_USERDEF) return 0;
 	return (playerDemoData.length >= curLevel && typeof playerDemoData[curLevel-1] != "undefined");
@@ -314,7 +314,7 @@ function saveKeyCode(code, keyAction)
 function recordModeDump(state)
 {
 	recordPlayTime(state);
-	remapActionKey();
+	//remapActionKey();
 	convertBornPos();
 	dumpRecord();
 }
@@ -372,10 +372,10 @@ function recordKeyAction2()
 		if(alwaysRecord) keyPressed = -1; //floating
 		break;
 	case 0:	//release	
-		if(recordKeyCode != KEYCODE_SPACE) { 
+		if(recordKeyCode != "Space") { 
 			playRecord.push(recordCount);
-			playRecord.push(KEYCODE_SPACE);
-			lastKeyCode = recordKeyCode = KEYCODE_SPACE;
+			playRecord.push("Space");
+			lastKeyCode = recordKeyCode = "Space";
 			keyAction = ACT_STOP;
 		}
 		break;	
@@ -386,10 +386,14 @@ var recordIdx;
 
 function recordPlayDemo()
 {
+	console.log ("Ici la")
 	if(recordIdx < playRecord.length) {
 		if(playRecord[recordIdx*2] == recordCount) {
 			//loadingTxt.text = recordIdx;  //for debug
-			pressKey(playRecord[recordIdx*2+1]);
+			code=keyCodeToEventCode(playRecord[recordIdx*2+1]);
+			console.log ("code:" + code + ",keycode=" + playRecord[recordIdx*2+1]);
+			pressKey(keyCodeToEventCode(playRecord[recordIdx*2+1]));
+			//pressKey(playRecord[recordIdx*2+1]);
 			recordIdx++;
 		}
 	}
@@ -429,17 +433,28 @@ function recordPlayTime(state)
 	recordState = (state == GAME_FINISH)?1:0; //finish or dead
 }
 
-var actionKeyMapping = [
-	[ KEYCODE_A, KEYCODE_LEFT],  //move left
-	[ KEYCODE_D, KEYCODE_RIGHT], //move right
-	[ KEYCODE_W, KEYCODE_UP],    //move up
-	[ KEYCODE_S, KEYCODE_DOWN],  //move down
-	[ KEYCODE_Q, KEYCODE_Z],     //dig left
-	[ KEYCODE_E, KEYCODE_X],     //dig right
-	[ KEYCODE_COMMA, KEYCODE_Z], //dig left
-	[ KEYCODE_PERIOD, KEYCODE_X] //dig right
+/*var actionKeyMapping = [
+	[ "KeyA", "ArrowLeft"],  //move left
+	[ "KeyD", "ArrowRight"], //move right
+	[ "KeyW", "ArrowUp"],    //move up
+	[ "KeyS", "ArrowDown"],  //move down
+	[ "KeyQ", "KeyZ"],     //dig left
+	[ "KeyE", "KeyX"],     //dig right
+	[ "Comma", "KeyZ"], //dig left
+	[ "Period", "KeyX"] //dig right
 ];
 
+	var actionKeyMapping = [
+	[ KEYCODE_A, "ArrowLeft"],  //move left
+	[ KEYCODE_D, "ArrowRight"], //move right
+	[ KEYCODE_W, "ArrowUp"],    //move up
+	[ KEYCODE_S, "ArrowDown"],  //move down
+	[ KEYCODE_Q, "KeyZ"],     //dig left
+	[ KEYCODE_E, "KeyX"],     //dig right
+	[ KEYCODE_COMMA, "KeyZ"], //dig left
+	[ KEYCODE_PERIOD, "KeyX"] //dig right
+];
+*/
 //Remap action key to orignal "left, right, up down and Z, X"
 //for backward compatible
 function remapActionKey()
@@ -452,6 +467,13 @@ function remapActionKey()
 			}
 		}
 	}
+	//console.log("la")
+	
+	/*for(var i = 0; i < playRecord.length; i+=2){
+		console.log("KeyCode=" + playRecord[i+1])
+		playRecord[i+1] = keyCodeToEventCode(playRecord[i+1])	
+		console.log("code=" + playRecord[i+1])
+	}*/
 }
 
 function convertBornPos()

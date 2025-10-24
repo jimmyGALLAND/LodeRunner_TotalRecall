@@ -108,15 +108,15 @@ function getLastGamepadInfo()
 
 var keyCodeMapping  = [
   //[[keyCode1, ctrl, shift], [keyCode2, ctrl, shift]	
-	[[KEYCODE_UP,    0, 0],   [KEYCODE_UP,    0, 0]], //up
-	[[KEYCODE_DOWN,  0, 0],   [KEYCODE_DOWN,  0, 0]], //down
-	[[KEYCODE_LEFT,  0, 0],   [KEYCODE_LEFT,  0, 0]], //left
-	[[KEYCODE_RIGHT, 0, 0],   [KEYCODE_RIGHT, 0, 0]], //right
-	[[KEYCODE_Z,     0, 0],   [KEYCODE_ENTER, 0, 0]], //dig-left
-	[[KEYCODE_X,     0, 0],   [KEYCODE_ENTER, 0, 0]], //dig-right
-	[[KEYCODE_ESC,   0, 0],   [KEYCODE_ENTER, 0, 0]], //pause
-	[[KEYCODE_ENTER, 0, 0],   [KEYCODE_ENTER, 0, 0]], //enter
-	[[KEYCODE_A,     1, 0],   [KEYCODE_ENTER, 0, 0]]  //game abort
+	[["ArrowUp",    0, 0],   ["ArrowUp",    0, 0]], //up
+	[["ArrowDown",  0, 0],   ["ArrowDown",  0, 0]], //down
+	[["ArrowLeft",  0, 0],   ["ArrowLeft",  0, 0]], //left
+	[["ArrowRight", 0, 0],   ["ArrowRight", 0, 0]], //right
+	[["KeyZ",       0, 0],   ["Enter", 0, 0]], //dig-left
+	[["KeyX",       0, 0],   ["Enter", 0, 0]], //dig-right
+	[["Escape",     0, 0],   ["Enter", 0, 0]], //pause
+	[["Enter",      0, 0],   ["Enter", 0, 0]], //enter
+	[["KeyA",       1, 0],   ["Enter", 0, 0]]  //game abort
 ];
 
 var gameButtonMapping = [ 
@@ -237,7 +237,7 @@ function sendKeyUp(twinKey, id)
 	var key = (inputNameState)? twinKey[1]:twinKey[0];
 	if(key[0] == null) return;
 	
-	var event = {keyCode: key[0], ctrlKey: key[1], shiftKey: key[2]};
+	var event = {code: key[0], ctrlKey: key[1], shiftKey: key[2]};
 	//console.log("sendKeyUp = %d",keyCode );
 	if(typeof document.onkeydown == "function" ) document.onkeyup(event);
 	gamepadLastId = id;
@@ -248,7 +248,7 @@ function sendKeyDown(twinKey, id)
 	var key = (inputNameState)? twinKey[1]:twinKey[0];
 	if(key[0] == null) return;
 	
-	var event = {keyCode: key[0], ctrlKey: key[1], shiftKey: key[2]};
+	var event = {code: key[0], ctrlKey: key[1], shiftKey: key[2]};
 	//console.log("sendKeyDown = %d",keyCode );
 	if(typeof document.onkeydown == "function" ) document.onkeydown(event);
 	gamepadLastId = id;

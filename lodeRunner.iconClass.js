@@ -362,7 +362,7 @@ function demoIconClass( _screenX1, _screenY1, _scale, _bitmap)
 	
 	this.enable = function ()
 	{
-		if(!curDemoLevelIsVaild()) {
+		if(!curDemoLevelIsValid()) {
 			self.disable(1); 
 			return;
 		}
