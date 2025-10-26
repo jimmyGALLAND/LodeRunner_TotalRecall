@@ -1,7 +1,7 @@
 //============
 // MISC
 //============
-var DEBUG = 1;
+var DEBUG = 0;
 var demoSoundOff = 1;
 
 function debug(string) 

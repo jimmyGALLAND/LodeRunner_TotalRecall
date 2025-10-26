@@ -237,15 +237,12 @@ function pressKey(code)
         case "KeyU":
         case "KeyY": //Y key to dig left, for German keyboards
         case "Comma":
-		case "ControlRight":
             keyAction = ACT_DIG_LEFT;
             break;
         case "KeyX":
         case "KeyO":
         case "KeyE":
         case "Period":
-		case "Numpad0":
-		case "End":
             keyAction = ACT_DIG_RIGHT;
             break;
         case "Escape": //help & pause
