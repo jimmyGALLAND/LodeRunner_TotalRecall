@@ -57,7 +57,6 @@ function countAutoDemoTimer()
 {
 	if(demoCountEnable) {
 		demoCountTime++;
-		//debug(demoCountTime);
 		if(demoCountTime > MAX_DEMO_WAIT_COUNT) {
 			disableAutoDemoTimer();
 			gameState = GAME_WAITING;	
@@ -88,7 +87,7 @@ function playDemo()
 	if(demoRecordIdx < demoRecord.length) {
 		if(demoRecord[demoRecordIdx*2] == demoTickCount) {
 			//loadingTxt.text = demoRecordIdx + " " + demoTickCount ; //for debug
-			pressKey(demoRecord[demoRecordIdx*2+1]);
+			pressKey(keyCodeToEventCode(demoRecord[demoRecordIdx*2+1]));
 			demoRecordIdx++;
 		}
 	}
@@ -214,7 +213,7 @@ function getNextDemoLevel()
 	initDemoInfo();
 }
 
-function curDemoLevelIsVaild()
+function curDemoLevelIsValid()
 {
 	if(playData == PLAY_DATA_USERDEF) return 0;
 	return (playerDemoData.length >= curLevel && typeof playerDemoData[curLevel-1] != "undefined");
@@ -319,6 +318,7 @@ function recordModeDump(state)
 	dumpRecord();
 }
 
+
 function recordModeToggle(state)
 {
 	if(recordMode == RECORD_KEY) {
@@ -352,7 +352,8 @@ function recordKeyAction1()
 	if(!keyPressed) return;
 	if(recordKeyCode != lastKeyCode || alwaysRecord) {
 		playRecord.push(recordCount);
-		playRecord.push(recordKeyCode);
+		code=codeToEventKeyCode(recordKeyCode)
+		playRecord.push(codeToEventKeyCode(recordKeyCode));
 		lastKeyCode = recordKeyCode;
 	}
 	keyPressed = 0;
@@ -366,19 +367,20 @@ function recordKeyAction2()
 	case 1: //pressed
 		if(recordKeyCode != lastKeyCode || alwaysRecord) {
 			playRecord.push(recordCount);
-			playRecord.push(recordKeyCode);
+			code=codeToEventKeyCode(recordKeyCode)
+			playRecord.push(codeToEventKeyCode(recordKeyCode));
 			lastKeyCode = recordKeyCode;
 		}
 		if(alwaysRecord) keyPressed = -1; //floating
 		break;
 	case 0:	//release	
-		if(recordKeyCode != KEYCODE_SPACE) { 
+		if(recordKeyCode != "Space") { 
 			playRecord.push(recordCount);
-			playRecord.push(KEYCODE_SPACE);
-			lastKeyCode = recordKeyCode = KEYCODE_SPACE;
+			playRecord.push(codeToEventKeyCode("Space"));
+			lastKeyCode = recordKeyCode = "Space";
 			keyAction = ACT_STOP;
 		}
-		break;	
+		break;
 	}
 }
 
@@ -389,7 +391,8 @@ function recordPlayDemo()
 	if(recordIdx < playRecord.length) {
 		if(playRecord[recordIdx*2] == recordCount) {
 			//loadingTxt.text = recordIdx;  //for debug
-			pressKey(playRecord[recordIdx*2+1]);
+			code=playRecord[recordIdx*2+1];
+			pressKey(keyCodeToEventCode(demoRecord[demoRecordIdx*2+1]));
 			recordIdx++;
 		}
 	}
@@ -429,17 +432,6 @@ function recordPlayTime(state)
 	recordState = (state == GAME_FINISH)?1:0; //finish or dead
 }
 
-var actionKeyMapping = [
-	[ KEYCODE_A, KEYCODE_LEFT],  //move left
-	[ KEYCODE_D, KEYCODE_RIGHT], //move right
-	[ KEYCODE_W, KEYCODE_UP],    //move up
-	[ KEYCODE_S, KEYCODE_DOWN],  //move down
-	[ KEYCODE_Q, KEYCODE_Z],     //dig left
-	[ KEYCODE_E, KEYCODE_X],     //dig right
-	[ KEYCODE_COMMA, KEYCODE_Z], //dig left
-	[ KEYCODE_PERIOD, KEYCODE_X] //dig right
-];
-
 //Remap action key to orignal "left, right, up down and Z, X"
 //for backward compatible
 function remapActionKey()
@@ -452,6 +444,21 @@ function remapActionKey()
 			}
 		}
 	}
+}
+
+function codeToEventKeyCode(code)
+{
+	for (const [key, value] of Object.entries(MAPKEYCODE)) {
+		if (value === code) {
+			return Number(key);
+		}
+	}
+	return 0;
+}
+
+function keyCodeToEventCode(keyCode)
+{
+ 	return MAPKEYCODE[keyCode] || "";
 }
 
 function convertBornPos()
@@ -475,7 +482,6 @@ var curDemoData = { ai: AI_VERSION, time: 0 }; //bug fixed: when press CTRL-C wi
 function dumpRecord()
 {
 	var txtStr;	
-	
 	curDemoData = {};
 	curDemoData.level = curLevel;
 	curDemoData.ai = AI_VERSION;
@@ -511,7 +517,7 @@ function dumpRecord()
 		for(var i = 1; i < playRecord.length; i++) {
 			txtStr += ", " + playRecord[i];
 		}
-		debug(txtStr+ " ], //" + (playRecord.length/2));
+		debug(txtStr+ " ],");
 	} else {
 		debug("		action: [ ],");
 	}

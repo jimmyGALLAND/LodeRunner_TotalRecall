@@ -122,7 +122,7 @@ function helpMenuClass(_stage, _bitmap, _editBitmap, _scale)
 	function helpKeyDown(event)
 	{
 		if(!event){ event = window.event; } //cross browser issues exist
-		if(event.keyCode == KEYCODE_ESC) {
+		if(event.key == "Escape") {
 			closeHelpMenu();
 		}
 		return false;
@@ -490,8 +490,8 @@ function selectDialog(_titleName, _checkBitmap, _levelData, _activeLevel, _scree
 	
 		if(event.shiftKey || event.ctrlKey) return false;
 
-		switch(event.keyCode) {
-		case KEYCODE_ESC:
+		switch(event.key) {
+		case "Escape":
 			closeBox();
 			break;	
 		default:
@@ -1313,16 +1313,16 @@ function handleMenuKeyDown(event)
 	
 	if(event.shiftKey || event.ctrlKey) return false;
 
-	switch(event.keyCode) {
-	case KEYCODE_UP: 
+	switch(event.key) {
+	case "ArrowUp": 
 		keyAction = ACT_UP;
 		break;
-	case KEYCODE_DOWN: 
+	case "ArrowDown": 
 		keyAction = ACT_DOWN;
 		break;
-	case KEYCODE_ENTER:
+	case "Enter":
 		break;	
-	case KEYCODE_ESC:
+	case "Escape":
 		break;	
 	default:
 		keyAction = ACT_UNKNOWN;
@@ -1569,23 +1569,23 @@ function menuDialog(_titleName, _itemList, _stage, _scale, _closeIconEnable, _cl
 	
 		if(event.shiftKey || event.ctrlKey) return false;
 
-		switch(event.keyCode) {
-		case KEYCODE_UP: 
+		switch(event.key) {
+		case "ArrowUp": 
 			buttonInactive(menuButtonObj[_itemList[0].activeItem]);
 			if(--_itemList[0].activeItem < 0) _itemList[0].activeItem = menuButtonObj.length-1;
 			buttonActive(menuButtonObj[_itemList[0].activeItem]);
 			_stage.update();
 			break;
-		case KEYCODE_DOWN: 
+		case "ArrowDown": 
 			buttonInactive(menuButtonObj[_itemList[0].activeItem]);
 			if(++_itemList[0].activeItem > (menuButtonObj.length-1)) _itemList[0].activeItem = 0;
 			buttonActive(menuButtonObj[_itemList[0].activeItem]);
 			_stage.update();
 			break;
-		case KEYCODE_ENTER:
+		case "Enter":
 			buttonClick();	
 			break;	
-		case KEYCODE_ESC:
+		case "Escape":
 			if(closeIconObj != null) closeBox();
 			break;	
 		default:
@@ -2785,8 +2785,8 @@ function backupDialog(id, _callBackFun)
 	
 		if(event.shiftKey || event.ctrlKey) return false;
 
-		switch(event.keyCode) {
-		case KEYCODE_ESC:
+		switch(event.key) {
+		case "Escape":
 			closeDialog();
 			break;	
 		default:
@@ -3758,8 +3758,8 @@ function restoreDialog(id, _callBackFun)
 	
 		if(event.shiftKey || event.ctrlKey) return false;
 
-		switch(event.keyCode) {
-		case KEYCODE_ESC:
+		switch(event.key) {
+		case "Escape":
 			closeDialog();
 			break;	
 		default:

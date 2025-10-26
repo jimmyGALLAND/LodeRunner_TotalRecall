@@ -309,73 +309,74 @@ function showScoreTable(_playData, _curScoreInfo, _callbackFun, _waitTime)
 		
 		function handleHiScoreName(event)
 		{
-			if(!event){ event = window.event; } //cross browser issues exist
-			
-			var code = event.keyCode;
-			
-			if(curPos >= MAX_HISCORE_NAME_LENGTH && 
-			   code != KEYCODE_BKSPACE && code != KEYCODE_LEFT && code != KEYCODE_ENTER) 
-			{
-				soundPlay("beep"); //wrong key code	
+			if (!event) { event = window.event; }
+		
+			let key = event.key;
+		
+			if (curPos >= MAX_HISCORE_NAME_LENGTH &&
+				key !== "Backspace" && key !== "ArrowLeft" && key !== "Enter") {
+				soundPlay("beep");
 				return false;
 			}
-
-			switch(true) {
-			case (code >= 48 && code <= 57): // 0 ~ 9
-				if(curPos == 0) { soundPlay("beep"); break; } //first char except numbers
-				name[curPos++] = String.fromCharCode(code);
-				break;	
-			case (code >=65 && code <= 90): // A ~ Z
-			case (code >= 97 && code <= 122): //a ~ z
-				if( code > 90) code -= 32;	
-				name[curPos++] = String.fromCharCode(code);
-				break;
-			case (code == KEYCODE_DOT): //'.'		
-				if(curPos == 0) { soundPlay("beep"); break;	} //first char except '.'
-				name[curPos++] = ".";
-				break;
-			case (code == KEYCODE_DASH || code == KEYCODE_HYPHEN || code == KEYCODE_SUBTRACT): //'-'
-				if(curPos == 0) { soundPlay("beep"); break;	} //first char except '-'
-				name[curPos++] = "-";
-				break;
-			case (code == KEYCODE_SPACE): //space
-				if(curPos == 0) { soundPlay("beep"); break;	} //first char except space
-				name[curPos++] = " ";
-				break;
-			case (code == KEYCODE_BKSPACE): //backspace
-				if(curPos == 0) break;
-				name.splice(--curPos, 1);
-				break;
-			case (code == KEYCODE_LEFT): //LEFT
-				if(curPos > 0) curPos--;	
-				break;
-			case (code == KEYCODE_RIGHT): //RIGHT
-				if(curPos < name.length) curPos++;	
-				break;
-			case (code == KEYCODE_UP): //UP
-				name[curPos] = nextChar(name[curPos], 1);
-				break;
-			case (code == KEYCODE_DOWN): //DOWN
-				name[curPos] = nextChar(name[curPos], -1);
-				break;
-			case (code == KEYCODE_ENTER): //ENTER
-				if(vaildPlayerName(name)) {
-					restoreKeyDownHandler();  //avoid type "ENTER" twice
-					inputFinish(true);	//async
-				} else soundPlay("beep");	
-				break;	
-			default:
-				//debug(code);	
-				if(code > 32) soundPlay("beep"); //wrong key code	
-				break;	
+		
+			switch (true) {
+				//  0–9
+				case /^[0-9]$/.test(key):
+					if (curPos === 0) { soundPlay("beep"); break; }
+					name[curPos++] = key;
+					break;
+				// A–Z a–z
+				case /^[a-zA-Z]$/.test(key):
+					name[curPos++] = key.toUpperCase();
+					break;
+				case (key === "."):
+					if (curPos === 0) { soundPlay("beep"); break; }  //first char except '.	'
+					name[curPos++] = ".";
+					break;
+				case (key === "-"):
+					if (curPos === 0) { soundPlay("beep"); break; } //first char except '-'
+					name[curPos++] = "-";
+					break;
+				case (key === " "):  //space
+					if (curPos === 0) { soundPlay("beep"); break; } //first char except 'scace'
+					name[curPos++] = " ";
+					break;
+						case (key === "Backspace"):
+					if (curPos === 0) break;
+					name.splice(--curPos, 1);
+					break;		
+				case (key === "ArrowLeft"):
+					if (curPos > 0) curPos--;
+					break;
+				case (key === "ArrowRight"):
+					if (curPos < name.length) curPos++;
+					break;		
+				case (key === "ArrowUp"):
+					name[curPos] = nextChar(name[curPos], 1);
+					break;
+				case (key === "ArrowDown"):
+					name[curPos] = nextChar(name[curPos], -1);
+					break;
+				case (key === "Enter"):
+					if (validPlayerName(name)) {
+						restoreKeyDownHandler(); // avoid type "ENTER" twice
+						inputFinish(true); // async
+					} else {
+						soundPlay("beep");
+					}
+					break;
+		
+				default:
+					if (key.length > 1) soundPlay("beep"); // wrong key code
+					break;
 			}
-			
+		
 			redrawName();
 			return false;
 		}
 	}
 }
- 
+
 function inputPlayerName(_stage, _callbackFun) 
 {
 	var constString = "PLAYER NAME:"
@@ -434,7 +435,7 @@ function inputPlayerName(_stage, _callbackFun)
 	}
 }
 
-function vaildPlayerName(playerArray)
+function validPlayerName(playerArray)
 {
 	var len = playerArray.length;
 
@@ -512,80 +513,104 @@ function inputString(_stage, _maxSize, _startX, _startY, _defaultString, _callba
 
 	function nextChar(charValue, nextMode)
 	{
-		if(typeof(charValue) == "undefined") charValue = " ";
-		var code = charValue.charCodeAt(0);
-			
-		if(nextMode >=0) code++; else code--;
-			
-		if (code < 65 || code > 90) { //out of A-Z
-			if(nextMode >=0) code = 65;
-			else code= 90;
+		if (typeof charValue !== "string" || charValue.length === 0) {
+			charValue = " ";
 		}
+	
+		let code = charValue.toUpperCase().charCodeAt(0);
+	
+		if (code < 65 || code > 90) { //out of A-Z
+			code = 65; 
+		}
+	
+		// nextMode >= 0 → next char else previous
+		code += (nextMode >= 0) ? 1 : -1;
+	
+		if (code > 90) code = 65;
+		if (code < 65) code = 90;
+	
 		return String.fromCharCode(code);
 	}	
 	
-	function handleStringInput(event)
-	{
-		if(!event){ event = window.event; } //cross browser issues exist
-			
-		var code = event.keyCode;
-			
-		if(curPos >= _maxSize && code != KEYCODE_BKSPACE && code != KEYCODE_LEFT && code != KEYCODE_ENTER) 
-		{
-			soundPlay("beep"); //wrong key code	
+	function handleStringInput(event) {
+		if (!event) event = window.event; 
+	
+		let key = event.key; 
+	
+		if (
+			curPos >= _maxSize &&
+			!["Backspace", "ArrowLeft", "Enter"].includes(key)
+		) {
+			soundPlay("beep");
 			return false;
 		}
+	
+		switch (true) {
+			// 0–9
+			case /^[0-9]$/.test(key):
+				if (curPos === 0) { soundPlay("beep"); break; }
+				inputText[curPos++] = key;
+				break;
+	
+			// A–Z a-z
+			case /^[a-zA-Z]$/.test(key):
+				inputText[curPos++] = key.toUpperCase();
+				break;
+	
+			// '.'
+			case key === ".":
+				if (curPos === 0) { soundPlay("beep"); break; }
+				inputText[curPos++] = ".";
+				break;
+	
+			// '-'
+			case key === "-":
+				if (curPos === 0) { soundPlay("beep"); break; }
+				inputText[curPos++] = "-";
+				break;
+	
+			// Space
+			case key === " ":
+				if (curPos === 0) { soundPlay("beep"); break; }
+				inputText[curPos++] = " ";
+				break;
+	
+			// Backscape
+			case key === "Backspace":
+				if (curPos === 0) break;
+				inputText.splice(--curPos, 1);
+				break;
 
-		switch(true) {
-		case (code >= 48 && code <= 57): // 0 ~ 9
-			if(curPos == 0) { soundPlay("beep"); break; } //first char except numbers
-			inputText[curPos++] = String.fromCharCode(code);
-			break;	
-		case (code >=65 && code <= 90): // A ~ Z
-		case (code >= 97 && code <= 122): //a ~ z
-			if( code > 90) code -= 32;	
-			inputText[curPos++] = String.fromCharCode(code);
-			break;
-		case (code == KEYCODE_DOT): //'.'		
-			if(curPos == 0) { soundPlay("beep"); break;	} //first char except '.'
-			inputText[curPos++] = ".";
-			break;
-		case (code == KEYCODE_DASH || code == KEYCODE_HYPHEN || code == KEYCODE_SUBTRACT): //'-'
-			if(curPos == 0) { soundPlay("beep"); break;	} //first char except '-'
-			inputText[curPos++] = "-";
-			break;
-		case (code == KEYCODE_SPACE): //space
-			if(curPos == 0) { soundPlay("beep"); break;	} //first char except space
-			inputText[curPos++] = " ";
-			break;
-		case (code == KEYCODE_BKSPACE): //backspace
-			if(curPos == 0) break;
-			inputText.splice(--curPos, 1);
-			break;
-		case (code == KEYCODE_LEFT): //LEFT
-			if(curPos > 0) curPos--;	
-			break;
-		case (code == KEYCODE_RIGHT): //RIGHT
-			if(curPos < inputText.length) curPos++;	
-			break;
-		case (code == KEYCODE_UP): //UP
-			inputText[curPos] = nextChar(inputText[curPos], 1);
-			break;
-		case (code == KEYCODE_DOWN): //DOWN
-			inputText[curPos] = nextChar(inputText[curPos], -1);
-			break;
-		case (code == KEYCODE_ENTER): //ENTER
-			if(vaildPlayerName(inputText)) { 
-				inputFinish();
-				return true;
-			} else soundPlay("beep");	
-			break;	
-		default:
-			//debug(code);	
-			if(code > 32) soundPlay("beep"); //wrong key code	
-			break;	
+			// arrows
+			case key === "ArrowLeft":
+				if (curPos > 0) curPos--;
+				break;
+			case key === "ArrowRight":
+				if (curPos < inputText.length) curPos++;
+				break;
+			case key === "ArrowUp":
+				inputText[curPos] = nextChar(inputText[curPos], 1);
+				break;
+			case key === "ArrowDown":
+				inputText[curPos] = nextChar(inputText[curPos], -1);
+				break;
+
+			// validation
+			case key === "Enter":
+				if (validPlayerName(inputText)) {
+					inputFinish();
+					return true;
+				} else {
+					soundPlay("beep");
+				}
+				break;
+
+			default:
+		    //wrong key code	
+				if (key.length === 1 && key.charCodeAt(0) > 32) soundPlay("beep");
+				break;
 		}
-			
+	
 		drawString();
 		return false;
 	}

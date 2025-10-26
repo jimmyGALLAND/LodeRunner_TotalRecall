@@ -1356,7 +1356,7 @@ function mainTick(event)
 		playGame(deltaS);
 		break;
 	case GAME_RUNNER_DEAD:
-		//console.log("Time=" + curTime + ", Tick= " + playTickTimer);
+		//debug("Time=" + curTime + ", Tick= " + playTickTimer);
 		//if(recordMode) recordModeToggle(GAME_RUNNER_DEAD); //for debug only (if enable it must disable below statement)
 		if(recordMode == RECORD_KEY) recordModeDump(GAME_RUNNER_DEAD);	
 			
@@ -1419,7 +1419,7 @@ function mainTick(event)
 		return;
 	case GAME_FINISH: 
 		stopAllSpriteObj();
-		//console.log("Time=" + curTime + ", Tick= " + playTickTimer);
+		//debug("Time=" + curTime + ", Tick= " + playTickTimer);
 			
 		switch(playMode) {
 		case PLAY_CLASSIC:
